@@ -141,8 +141,6 @@ func extrairRelatorio(url string) {
 		fmt.Printf("error: %v", err)
 		return
 	}
-	fmt.Printf("XMLName: %#v\n", r.XMLName)
-	fmt.Printf("Name: %q\n", r.Info.Parametros)
 }
 
 // extrairURLRelatorio se existe algum alerta para o estado e em caso
@@ -158,7 +156,6 @@ func extrairURLRelatorio(url string) ([]string, error) {
 	if len(urls) == 0 {
 		return urls, errors.New(ERR_NAOEXISTE_URLS)
 	}
-	fmt.Printf("%q\n", re.FindAllString(body, -1))
 	return urls, nil
 }
 
