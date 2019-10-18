@@ -1,0 +1,4606 @@
+
+<!doctype html lang="es">
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="author" content="Systems Engineers: Carlos Becker, Victor Leite"/>
+<meta name="Description" content="Tempo, Meteorologia, Sol, Lua, Chuva, Vento, Temperatura, Governo, Agricultura, Avisos, Alertas"/>
+<title>Alert-AS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link type="text/css"
+ href="http://www.simepar.br/site/css/superfish.css" rel="stylesheet" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  
+<script type="text/javascript"
+ src="/cv/js/bootstrap.min.js?_debugResources=y&n=1571343632237"></script>
+<script type="text/javascript"
+ src="/cv/js/application.js?_debugResources=y&n=1571343632237"></script>
+<link rel="stylesheet"
+ href="/cv/css/bootstrap/bootstrap.css?_debugResources=y&n=1571343632237" />
+<script src="/cv/js/OpenLayers-2.12/OpenLayers.js" type="text/javascript"></script>
+
+
+<link rel="stylesheet"
+ href="/cv/js/OpenLayers-2.12/theme/default/style.css?_debugResources=y&n=1571343632237"
+ type="text/css" />
+
+<meta name="layout" content="main">
+
+
+
+<style type="text/css">
+.legenda_mapa {
+ position: absolute;
+ left: 25%;
+ bottom: 5px;
+ z-index: 10000;
+ background-color: #FFFFFF;
+ font-size: 11px;
+}
+</style>
+
+<script type="text/javascript"
+ src="/cv/js/mapas.js?_debugResources=y&n=1571343632237"></script>
+<script>
+ $(function(){
+
+  $(".legenda").mouseover(function(){
+   $(this).tooltip('show');
+  });
+  $(".legenda").mouseout(function(){
+   $(this).tooltip('hide');
+  });
+
+  $( "#lista_tabs a" ).on( "click", function( event ) {
+      //console.log( $( this ).attr('id') );
+      if ( $( this ).attr('id') != "2" )
+      {
+       //alert("Hoje");
+       layer_vector_futuro.setVisibility(false);
+    markers_futuro.setVisibility(false);
+    layer_vector.setVisibility(true);
+    markers.setVisibility(true);
+    $("#legenda_mapa2").css("display", "none");
+    $("#legenda_mapa").css("display", "block");
+   }
+      else
+   {
+       //alert("Futuro");
+       layer_vector_futuro.setVisibility(true);
+    markers_futuro.setVisibility(true);
+    layer_vector.setVisibility(false);
+    markers.setVisibility(false);
+    $("#legenda_mapa2").css("display", "block");
+    $("#legenda_mapa").css("display", "none");
+   }
+  });
+
+  initSimpleEmergency({toolbar: false, country: true, pais: 32});
+  iAvisos=0;
+  
+  
+  $("#temaviso_hoje").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9510.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'hoje', 'images/icones/marcadores/am_07.png', 'Chuvas Intensas', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11073');
+
+   } 
+  }); 
+     
+  
+  
+  $("#temaviso_hoje").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9504.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'hoje', 'images/icones/marcadores/am_15.png', 'Baixa Umidade', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11063');
+
+   } 
+  }); 
+     
+  
+  
+  $("#temaviso_hoje").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9506.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'hoje', 'images/icones/marcadores/am_15.png', 'Baixa Umidade', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11067');
+
+   } 
+  }); 
+     
+  
+  
+  $("#temaviso_hoje").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9508.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'hoje', 'images/icones/marcadores/am_15.png', 'Baixa Umidade', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11069');
+
+   } 
+  }); 
+     
+  
+  
+  $("#temaviso_hoje").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9509.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'hoje', 'images/icones/marcadores/am_19.png', 'Tempestade', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11072');
+
+   } 
+  }); 
+     
+  
+  
+  $("#temaviso_hoje").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9507.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'hoje', 'images/icones/marcadores/lj_15.png', 'Baixa Umidade', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11068');
+
+   } 
+  }); 
+     
+  
+  
+  $("#temaviso_hoje").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9494.3.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'hoje', 'images/icones/marcadores/lj_01.png', 'Ventos Costeiros', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11065');
+
+   } 
+  }); 
+     
+  
+  
+  $("#temaviso_hoje").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9505.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'hoje', 'images/icones/marcadores/lj_15.png', 'Baixa Umidade', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11066');
+
+   } 
+  }); 
+     
+  
+  
+  $("#temaviso_hoje").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/16/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9493.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'hoje', 'images/icones/marcadores/lj_18.png', 'Acumulado de Chuva', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11051');
+
+   } 
+  }); 
+     
+  
+  $("#1").text("Aviso Hoje ("+ iAvisos + ")"); 
+  if (iAvisos > 1) {
+   $("#1").text("Avisos Hoje ("+ iAvisos + ")");
+  }
+
+  iAvisos=0;
+  
+  $("#temaviso_futuro").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9509.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'futuro', 'images/icones/marcadores/am_19.png', 'Tempestade', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11072');
+
+   }
+  });
+   
+  
+  $("#temaviso_futuro").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9510.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'futuro', 'images/icones/marcadores/am_07.png', 'Chuvas Intensas', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11073');
+
+   }
+  });
+   
+  
+  $("#temaviso_futuro").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/16/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9493.1.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'futuro', 'images/icones/marcadores/lj_18.png', 'Acumulado de Chuva', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11051');
+
+   }
+  });
+   
+  
+  $("#temaviso_futuro").css("display", "inline-block");
+  iAvisos++;
+  $.ajax({
+   type: "GET",
+   url: 'http://alert-as.inmet.gov.br/cap_12/2019/10/17/urn:oid:2.49.0.0.76.0/urn:oid:2.49.0.0.76.0.2019.9494.3.xml',
+   crossDomain : true,
+   async : true,
+   dataType : 'xml',
+   success : function(data, status, xhr) {
+
+    var root = $(data);
+    var info = root.find('info');
+
+    info.find('parameter').each(function() {
+
+     if ($(this).find('valueName').text() == "ColorRisk") {
+      color = $(this).find('value').text();
+     }
+
+    });
+
+    var area = info.find('area');
+
+    var cap = {     
+     'polygon': formatCapPolygon(area.find('polygon').text()),
+     'color': color
+    };
+
+    drawPolygonCountry(cap.polygon, cap.color, true, 'futuro', 'images/icones/marcadores/lj_01.png', 'Ventos Costeiros', 'http://alert-as.inmet.gov.br/cv/emergencia/cap/11065');
+
+   }
+  });
+   
+  
+  $("#2").text("Aviso Futuro ("+ iAvisos + ")");
+  if (iAvisos > 1) {
+   $("#2").text("Avisos Futuros ("+ iAvisos + ")");
+  }
+  
+  
+  $(function() {
+      $( "#tabs_hoje_futuro" ).tabs();
+      layer_vector_futuro.setVisibility(false);
+   markers_futuro.setVisibility(false);
+
+   $("#tabs_hoje_futuro").css("display", "block");
+   $("#estados_quadro2_loading").css("display", "none");
+   $("#estados_quadro2_titulo_txt").css("display", "block");
+   $("#legenda_mapa2").css("display", "none");
+   
+  });
+ });
+
+</script>
+
+
+<link rel="stylesheet" href="/cv/css/app.css?_debugResources=y&n=1571343632237"
+ type="text/css" />
+ 
+<link rel="stylesheet" href="/cv/css/responsive.css?_debugResources=y&n=1571343632237"
+ type="text/css" />
+
+<script type="text/javascript">
+ $(document).ready(function() {
+  resize_hero();
+ })
+</script>
+
+</head>
+<body class="container">
+ <div class="topo">
+
+  <div class="row-fluid">
+   <div class="span11">
+    
+     <div class="centralize">
+      <div class="langs">
+       <div style="height: 32px;margin-left: 1%;">
+       </div>
+       <a href="?lang=es"><img src="/cv/images/layout_images/spain-flag.png?_debugResources=y&n=1571343632237" /></a>
+       <a href="?lang=pt_BR"><img src="/cv/images/layout_images/brazil-flag.png?_debugResources=y&n=1571343632237" /></a>
+       <a href="?lang=en"><img src="/cv/images/layout_images/uk-flag.png?_debugResources=y&n=1571343632237" /></a>
+      </div>
+     </div>
+    
+     </div>
+   </div>
+   <div class="row-fluid logos">
+    <div class="span2 logoAlertas">
+     <a href="/cv/" class="clearfix">
+      <div class="mainlogo left responsive">
+       <img src="/cv/images/layout_images/logo_alert-as.png?_debugResources=y&n=1571343632237"/>
+      </div>
+     </a>
+    </div>
+    <div class="span4"></div>
+    <div class="span4"></div>
+    <div class="span2 logoOmm">
+     <a href="/cv/omm/open" name="action" target="_blank">
+      <div class="ommlogo right responsive2">
+       <img src="/cv/images/logo_omm.png?_debugResources=y&n=1571343632237"/>
+      </div>
+     </a>
+    </div>
+   </div>
+  </div>
+ </div>
+
+
+ <!-- Popups para mostrar informacoes das cidades -->
+ <div class="modal hide fade" id="layer-info-city-dialog">
+  <div class="modal-header">
+   <button type="button" class="close" data-dismiss="modal"
+    aria-hidden="true">&times;</button>
+   <h3>
+    City
+   </h3>
+  </div>
+  <div class="modal-body">
+   <p>
+   <dl class="dl-horizontal">
+    <h3 id="nome-cidade"></h3>
+    <dt id="risco-1" class="risco">
+     Risk Level
+     :&nbsp;<span id="risco-nivel-1"></spam>
+    </dt>
+    <dd aria-labelledby="risco-label-1">
+     Day
+     :&nbsp;<span id="risco-dia-1"></span>
+    </dd>
+    <dt id="risco-2" class="risco">
+     Risk Level
+     :&nbsp;<span id="risco-nivel-2"></span>
+    </dt>
+    <dd aria-labelledby="risco-label-2">
+     Day
+     :&nbsp;<span id="risco-dia-2"></span>
+    </dd>
+    <dt id="risco-3" class="risco">
+     Risk Level
+     :&nbsp;<span id="risco-nivel-3"></span>
+    </dt>
+    <dd aria-labelledby="risco-label-3">
+     Day
+     :&nbsp;<span id="risco-dia-3"></span>
+    </dd>
+    <dt id="risco-4" class="risco">
+     Risk Level
+     :&nbsp;<span id="risco-nivel-4"></span>
+    </dt>
+    <dd aria-labelledby="risco-label-4">
+     Day
+     :&nbsp;<span id="risco-dia-4"></span>
+    </dd>
+    <dt id="risco-5" class="risco">
+     Risk Level
+     :&nbsp;<span id="risco-nivel-5"></span>
+    </dt>
+    <dd aria-labelledby="risco-label-5">
+     Day
+     :&nbsp;<span id="risco-dia-5"></span>
+    </dd>
+   </dl>
+   </p>
+  </div>
+ </div>
+
+ <!-- Popups para mostrar informacoes das cidades -->
+ <div class="modal hide fade" id="choose_city_modal">
+  <div class="modal-header">
+   <button type="button" class="close" data-dismiss="modal"
+    aria-hidden="true">&times;</button>
+   <h3>
+    City
+   </h3>
+  </div>
+  <div class="modal-body">
+   <p>
+   <dl class="dl-horizontal">
+    <dt id="label" class="risco">
+     City
+     :
+    </dt>
+    <dd aria-labelledby="risco-label-1">
+     <select id="select_cidades_modal"></select>
+    </dd>
+   </dl>
+   </p>
+   <p>
+    <input type="button" class="btn btn-primary" data-dismiss="modal"
+     value="Ok" onClick="zoomByArea($('#select_cidades_modal').val());"></input>
+   </p>
+  </div>
+ </div>
+ <!-- Popup para mostrar informacoes das cidades -->
+ <div class="modal hide fade" id="layer-info-onlycity-dialog">
+  <div class="modal-header">
+   <button type="button" class="close" data-dismiss="modal"
+    aria-hidden="true">&times;</button>
+   <h3>
+    City
+   </h3>
+  </div>
+  <div class="modal-body">
+   <p>
+   <h3 id="nome-cidadeonly"></h3>
+   </p>
+  </div>
+ </div>
+
+ 
+
+
+
+    
+    
+    
+    
+
+
+<div class="header_menu_main">
+    <div class="header_menu_ext">
+    <div class="header_menu">
+        
+            <ul class="nav nav-pills">
+
+                
+                <li><a href="/cv/" style="color: #003366">Home</a></li>
+
+                 
+                
+                
+                
+                
+                
+                     
+                     
+                
+                
+                                
+
+                
+
+                
+                
+                
+                  
+                
+                 
+                
+                
+            </ul>
+        
+    </div>
+    </div>
+</div>
+ <div class="hero-unit" id="hero">
+  
+ <div id="innerpage" class="innerpage">
+  <!--**********************Grid para espaçamento***********************-->
+  <div class="row-fluid">
+   <div class="span12 content_grid12"></div>
+   <!--**********************Início da Grid main***********************-->
+   <div class="row-fluid">
+    <div class="span12 content_grid12">
+     <!--***********************Grid do Mapa**********************-->
+     <div class="hidden" id="wkt" value="POLYGON((-48.057736 -25.262082,-48.2301409999999 -25.469584,-48.129581 -25.2690289999999,-48.317081 -25.36514,-48.427081 -25.226805,-48.4740289999999 -25.480694,-48.7418069999999 -25.366806,-48.7087529999999 -25.4995839999999,-48.348474 -25.580694,-48.5351369999999 -25.852916,-48.7212489999999 -25.867083,-48.563752 -25.8643049999999,-48.584583 -26.173194,-48.7056959999999 -26.249027,-48.8101379999999 -26.0895809999999,-48.619025 -26.4518039999999,-48.7134699999999 -26.306804,-48.4926379999999 -26.217637,-48.688751 -26.678474,-48.6076389999999 -27.116806,-48.464862 -27.143194,-48.624584 -27.243749,-48.572918 -27.8865269999999,-48.7481949999999 -28.495138,-48.7018059999999 -28.2370829999999,-48.882637 -28.341807,-48.76014 -28.5379159999999,-49.706528 -29.3112509999999,-50.790973 -31.136249,-52.083473 -32.159027,-52.0979159999999 -31.8354169999999,-51.85875 -31.8698609999999,-51.254581 -31.4737499999999,-51.170417 -31.0654149999999,-50.701923 -30.7463089999999,-50.717476 -30.351968,-50.574355 -30.4814579999999,-50.5964279999999 -30.194925,-50.929973 -30.435754,-51.3001409999999 -30.005139,-51.2962479999999 -30.3020849999999,-51.094859 -30.365693,-51.2737509999999 -30.496805,-51.283196 -30.8123609999999,-51.369862 -30.6348619999999,-51.4418079999999 -31.087361,-51.9512489999999 -31.3418059999999,-52.0323589999999 -31.6948599999999,-52.111251 -31.5543059999999,-52.2570839999999 -31.849862,-52.1118049999999 -31.9520839999999,-52.2529179999999 -32.0470849999999,-52.079029 -32.0279149999999,-52.0981939999999 -32.1606949999999,-52.613195 -33.0862499999999,-53.373749 -33.747081,-53.5301749999999 -33.6623879999999,-53.5289189999999 -33.1723439999999,-53.0942449999999 -32.724191,-53.5941389999999 -32.4286049999999,-53.7133669999999 -32.10115,-54.525264 -31.498034,-55.2443539999999 -31.253818,-55.5927929999999 -30.8448999999999,-56.0078169999999 -31.062644,-56.020671 -30.7815009999999,-56.8350839999999 -30.0882,-57.550021 -30.263618,-57.615211 -30.179105,-55.8740469999999 -28.3593749999999,-55.6949049999999 -28.422416,-55.7723729999999 -28.2441259999999,-55.031884 -27.853931,-54.808007 -27.5330169999999,-54.2823739999999 -27.447117,-54.175957 -27.2606919999999,-53.797855 -27.1445639999999,-53.5918349999999 -26.2648879999999,-53.889825 -25.622438,-54.100365 -25.622523,-54.109864 -25.501548,-54.42947 -25.7030879999999,-54.5956409999999 -25.592119,-54.2812509999999 -24.071744,-54.667129 -23.8125649999999,-55.4118799999999 -23.958574,-55.521 -23.194309,-55.6851959999999 -22.9905289999999,-55.6121109999999 -22.65574,-55.8533439999999 -22.2785949999999,-56.2077379999999 -22.278108,-56.402675 -22.07474,-56.8304659999999 -22.2976669999999,-57.9883149999999 -22.081812,-57.8171609999999 -20.973692,-58.162831 -20.1597599999999,-57.8709489999999 -19.9764969999999,-58.1333999999999 -19.757842,-57.453851 -18.2311989999999,-57.7522309999999 -17.564458,-58.3954619999999 -17.18446,-58.4705209999999 -16.70303,-58.3203099999999 -16.2690299999999,-60.171982 -16.2621169999999,-60.2352329999999 -15.4735319999999,-60.5614859999999 -15.108008,-60.244247 -15.096813,-60.46772 -13.8009609999999,-61.0690389999999 -13.4634299999999,-61.82428 -13.53925,-62.1196589999999 -13.15354,-62.7644689999999 -13.02264,-63.093431 -12.657951,-63.3265609999999 -12.7049199999999,-63.7121199999999 -12.4578589999999,-64.2908859999999 -12.501411,-64.5127869999999 -12.222871,-65.0320589999999 -11.995081,-65.3613669999999 -11.25136,-65.250892 -10.984551,-65.4167859999999 -10.6186899999999,-65.2799539999999 -10.218301,-65.3949749999999 -9.68578099999991,-65.5604009999999 -9.84464999999994,-65.7682719999999 -9.73557099999994,-66.555549 -9.88398099999995,-67.70793 -10.7108099999999,-68.0598379999999 -10.6794109999999,-68.5435409999999 -11.110361,-69.4167849999999 -10.92746,-70.6278609999999 -11.0039299999999,-70.6303409999999 -9.82503999999994,-70.4963909999999 -9.42401999999998,-71.221558 -9.97024899999991,-72.1803349999999 -10.0002489999999,-72.35752 -9.49439899999999,-73.2093969999999 -9.41364899999991,-72.9540699999999 -8.98316899999992,-73.5289679999999 -8.35053099999993,-73.7737729999999 -7.90415099999996,-73.687202 -7.77561899999995,-73.988244 -7.55580999999995,-73.953391 -7.34610899999996,-73.690368 -7.31056999999998,-73.71083 -6.84003999999999,-73.131988 -6.50683999999995,-73.23581 -6.03168999999991,-72.820747 -5.10279899999995,-71.9067459999999 -4.51523099999997,-70.9367819999999 -4.38428999999996,-70.6452329999999 -4.12754799999993,-69.955521 -4.38516099999998,-69.368347 -1.33370099999996,-69.5932999999999 -0.516705999999942,-70.0680159999999 -0.134779999999921,-70.037346 0.553020000000004,-69.4682069999999 0.734350000000006,-69.1119299999999 0.642761000000064,-69.256722 1.02550100000008,-69.8540719999999 1.06975,-69.8551859999999 1.71492100000006,-68.1286479999999 1.73195100000009,-68.28955 1.84132000000005,-68.2187809999999 2.00652000000002,-67.941512 1.83070100000003,-67.3894119999999 2.24398100000008,-67.0974959999999 1.73257100000006,-67.0882789999999 1.16687100000013,-66.8570329999999 1.23018100000013,-66.3185119999999 0.755015000000128,-65.5855789999999 1.00891100000001,-65.5405499999999 0.648760000000095,-65.103088 1.156631,-64.7466359999999 1.22541699999994,-64.3974449999999 1.52681000000013,-64.3380049999999 1.36349400000006,-63.9954939999999 1.97986800000001,-63.3722759999999 2.2117090000001,-63.406807 2.43591000000009,-64.0560529999999 2.49765100000013,-63.9938239999999 2.76987400000007,-64.2352299999999 3.11431900000008,-64.185775 3.55958700000008,-64.796914 4.28569899999997,-64.5604939999999 4.10153400000007,-64.16439 4.12625100000002,-63.964108 3.86792199999996,-63.6768849999999 4.0190290000001,-63.497428 3.83986400000015,-63.4288169999999 3.97708799999998,-63.2049279999999 3.95125200000001,-62.9601969999999 3.60764700000004,-62.743804 3.67320000000001,-62.7485269999999 4.03486900000013,-61.9344059999999 4.11807099999999,-61.5232949999999 4.28225800000001,-61.3447499999999 4.53184400000004,-60.9913339999999 4.51606300000009,-60.589536 4.94276100000013,-60.730518 5.19712100000004,-60.2031449999999 5.26487800000012,-59.9694169999999 5.07307900000006,-60.1627579999999 4.52265000000011,-59.6734169999999 4.38313500000004,-59.7257679999999 4.19281800000005,-59.5157389999999 3.94142500000009,-59.8491969999999 3.60053200000004,-59.9815739999999 2.92923299999995,-59.909711 2.38966400000015,-59.723751 2.278232,-59.753337 1.862413,-58.795532 1.17695200000009,-58.50711 1.26440699999995,-58.3254579999999 1.59065800000002,-58.0079149999999 1.50234100000006,-57.999405 1.66695900000002,-57.5550239999999 1.69702700000011,-57.3023979999999 1.99007600000016,-55.9569239999999 1.84433300000012,-55.911927 2.04214600000006,-56.1331489999999 2.26415199999997,-55.948208 2.53200500000003,-55.3701829999999 2.40745700000008,-54.939891 2.63248000000004,-54.8638159999999 2.43851000000012,-54.313642 2.15938900000009,-54.1100529999999 2.1289460000001,-53.7835469999999 2.36567300000002,-52.904664 2.19118299999997,-52.554726 2.52337100000011,-52.346515 3.13536000000005,-51.5106919999999 4.44125000000008,-51.214026 4.14847299999997,-51.1795839999999 3.81569399999995,-51.0756939999999 3.89180500000003,-51.0415279999999 3.12958300000003,-50.6887519999999 2.13486099999994,-50.4598629999999 1.81541700000002,-49.918472 1.68819400000001,-50.0104169999999 0.312639000000104,-49.569306 0.385417000000132,-49.3245839999999 -0.161805999999899,-48.4370839999999 -0.231248999999934,-48.0176389999999 -0.699305999999979,-47.7848619999999 -0.587918000000002,-47.703752 -0.701805999999976,-47.6645849999999 -0.578194999999994,-47.428749 -0.761528999999939,-47.476529 -0.592916000000002,-47.3206949999999 -0.591527999999983,-47.168194 -0.819861000000003,-47.087359 -0.680972999999938,-47.10097 -0.8534709999999,-46.967641 -0.706527999999992,-46.7493069999999 -0.944305999999983,-46.637916 -0.791804999999954,-46.668194 -0.978194999999971,-46.4270819999999 -0.867359999999962,-46.4776379999999 -1.02735999999993,-46.318475 -1.02347199999997,-46.202362 -0.890415999999902,-46.2170829999999 -1.00458199999991,-45.96347 -1.05569399999996,-45.980415 -1.25874899999997,-45.8590279999999 -1.05124999999998,-45.9104159999999 -1.25791699999996,-45.714028 -1.119305,-45.6851389999999 -1.32180599999998,-45.630139 -1.12208299999998,-45.7004169999999 -1.37152799999996,-45.412083 -1.29763799999995,-45.488751 -1.48291599999993,-45.305695 -1.33652699999993,-45.3379179999999 -1.76819499999999,-45.154304 -1.47013899999996,-44.682641 -1.56458399999991,-44.83736 -1.82097299999998,-44.608195 -1.73486099999997,-44.4815299999999 -2.04236199999997,-44.6890249999999 -2.29097199999995,-44.4631969999999 -2.1462489999999,-44.302361 -2.487639,-44.0284719999999 -2.40902699999992,-44.235137 -2.77541599999995,-43.531529 -2.41930600000001,-43.4568059999999 -2.59736099999992,-43.464028 -2.42208399999998,-43.3479149999999 -2.44097099999993,-43.481803 -2.37263799999999,-43.3256939999999 -2.33680599999991,-42.2656929999999 -2.75680499999999,-42.281806 -2.8615289999999,-42.0065279999999 -2.715416,-41.340694 -2.92680499999994,-39.991806 -2.839583,-38.4634699999999 -3.70680499999992,-37.147641 -4.95263799999992,-36.6940269999999 -5.09652699999998,-35.9498589999999 -5.04347300000001,-35.3962529999999 -5.24624999999997,-34.7929149999999 -7.15402799999998,-34.947083 -8.3954159999999,-35.3034709999999 -9.18930499999993,-36.384582 -10.4998599999999,-36.8220819999999 -10.7168049999999,-37.3181949999999 -11.425417,-37.4456949999999 -11.406528,-37.547916 -11.548473,-37.3490299999999 -11.459306,-37.682919 -12.0926389999999,-38.244862 -12.852918,-38.5331959999999 -13.011527,-38.427082 -12.7665289999999,-38.695138 -12.5798609999999,-38.812085 -12.841805,-38.899307 -12.690696,-38.930973 -12.860972,-38.72014 -12.8768049999999,-39.0981939999999 -13.5651379999999,-38.914584 -13.3734719999999,-38.890694 -13.6534709999999,-38.99014 -13.8434729999999,-39.1509709999999 -13.753751,-39.004307 -13.854028,-39.0837509999999 -14.009027,-38.928195 -13.907638,-39.0681959999999 -14.7393059999999,-38.855694 -15.8565269999999,-39.2140279999999 -17.1693069999999,-39.137085 -17.6909709999999,-39.350419 -17.7170829999999,-39.2056959999999 -17.7720829999999,-39.4176419999999 -17.8643059999999,-39.7145839999999 -18.4612509999999,-39.810417 -19.649305,-40.233196 -19.90986,-40.1318039999999 -19.965972,-40.229584 -20.2951389999999,-40.379307 -20.2781929999999,-40.265973 -20.324307,-40.3587489999999 -20.519305,-40.7556949999999 -20.8598609999999,-41.0690259999999 -21.4970839999999,-40.98875 -22.0073599999999,-41.9623609999999 -22.534583,-41.8634709999999 -22.7568059999999,-42.0129159999999 -22.997638,-43.05153 -22.9823609999999,-43.085694 -22.67736,-43.2559729999999 -22.737916,-43.149861 -22.9509719999999,-43.2862509999999 -23.017083,-44.007085 -23.0965269999999,-43.562362 -23.0584719999999,-43.8451229999999 -22.8911539999999,-44.6687499999999 -23.054862,-44.5856939999999 -23.3601389999999,-45.059307 -23.418751,-45.416249 -23.6315269999999,-45.4318039999999 -23.833472,-46.3768049999999 -23.872083,-46.398472 -24.034027,-48.0218049999999 -25.0001389999999,-47.894306 -25.1068069999999,-48.057736 -25.262082))" data-color="green"></div>
+     <div class="row-fluid mapWrapper">
+      <div class="span5 content_grid5" style="min-width: 220px;">
+       <div id="map" style="min-width: 280px; height: 550px;">
+        <div id="legenda_mapa" class="legenda_mapa">
+         Válido para:
+         17-10-2019
+        </div>
+        <div id="legenda_mapa2" class="legenda_mapa">
+         Válido a partir de:
+         17-10-2019
+         23:59:00
+        </div>
+       </div>
+      </div>
+      <!--***********************Grid de Espaço**********************-->
+
+      <!--************Grid dos Estados*****************-->
+      <div class="span7 content_grid7">
+       <!--**********************style="background-color: blue;"***********************-->
+       <div class="row-fluid">
+        <div class="span12" style="height: auto">
+         <div id="estados_quadro2_main">
+          <div id="estados_quadro2_titulo">
+           <div id="estados_quadro2_loading">
+            <img
+             src="/cv/images/gif-load.gif?_debugResources=y&n=1571343632237" />
+           </div>
+           <div id="estados_quadro2_titulo_txt" style="display: none;">
+            <p>
+             Meteorological warnings:
+             <b>Brazil</b>
+            </p>
+            <div style="float: right; padding: 5px;">
+             <a target="_blank"
+              href="https://alerts.inmet.gov.br/cap_12/rss/alert-as.rss">
+              <img
+              src="/cv/images/feed_icon.png?_debugResources=y&n=1571343632237"
+              style="position: relative; top: -25px;" title="Rss" />
+             </a>
+            </div>
+           </div>
+          </div>
+          <div style="clear: both"></div>
+          <!--*********************************************-->
+          <div id="tabs_hoje_futuro" style="display: none;">
+           <ul id="lista_tabs">
+            <li><a id="1" href="#tabs-1">Aviso(s) Hoje </a><img
+             id="temaviso_hoje"
+             src="/cv/images/tem_aviso.png?_debugResources=y&n=1571343632237"
+             height="15" width="15" style="display: none; margin: 2px" /></li>
+            <li><a id="2" href="#tabs-2">Aviso(s) Futuro </a><img
+             id="temaviso_futuro"
+             src="/cv/images/tem_aviso.png?_debugResources=y&n=1571343632237"
+             height="15" width="15" style="display: none; margin: 2px" /></li>
+           </ul>
+           <div id="tabs-1">
+            <div id="estados_quadro2_barra_main1">
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Acre">
+                <img src="/cv/images/icones/paises/brasil/icon_acre.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Acre">
+                <p>
+                 AC
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Alagoas">
+                <img src="/cv/images/icones/paises/brasil/icon_alagoas.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Alagoas">
+                <p>
+                 AL
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Amapá">
+                <img src="/cv/images/icones/paises/brasil/icon_amapa.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Amapá">
+                <p>
+                 AP
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Amazonas">
+                <img src="/cv/images/icones/paises/brasil/icon_amazonas.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Amazonas">
+                <p>
+                 AM
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Bahia">
+                <img src="/cv/images/icones/paises/brasil/icon_bahia.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Bahia">
+                <p>
+                 BA
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11066">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11067">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Ceará">
+                <img src="/cv/images/icones/paises/brasil/icon_ceara.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Ceará">
+                <p>
+                 CE
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11066">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11067">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Distrito Federal">
+                <img src="/cv/images/icones/paises/brasil/icon_brasilia.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Distrito Federal">
+                <p>
+                 DF
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11063">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Espírito Santo">
+                <img src="/cv/images/icones/paises/brasil/icon_espirito_santo.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Espírito Santo">
+                <p>
+                 ES
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Goiás">
+                <img src="/cv/images/icones/paises/brasil/icon_goias.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Goiás">
+                <p>
+                 GO
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11063">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+
+              </div>
+             
+            </div>
+            <div class="clearFloat"></div>
+            <!--*********************************************-->
+            <div id="estados_quadro2_barra_main2">
+
+             
+              <div
+               id="estados_quadro2_barra_cinza1" class="cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Maranhão">
+                <img src="/cv/images/icones/paises/brasil/icon_maranhao.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Maranhão">
+                <p>
+                 MA
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2" class="cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Mato Grosso">
+                <img src="/cv/images/icones/paises/brasil/icon_mato_grosso.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Mato Grosso">
+                <p>
+                 MT
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11063">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11073">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Chuvas Intensas - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-7.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1" class="cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Mato Grosso do Sul">
+                <img src="/cv/images/icones/paises/brasil/icon_mato_grosso_sul.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Mato Grosso do Sul">
+                <p>
+                 MS
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2" class="cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Minas Gerais">
+                <img src="/cv/images/icones/paises/brasil/icon_minas_gerais.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Minas Gerais">
+                <p>
+                 MG
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11068">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11069">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1" class="cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Pará">
+                <img src="/cv/images/icones/paises/brasil/icon_para.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Pará">
+                <p>
+                 PA
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2" class="cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Paraíba">
+                <img src="/cv/images/icones/paises/brasil/icon_paraiba.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Paraíba">
+                <p>
+                 PB
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11066">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11067">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1" class="cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Paraná">
+                <img src="/cv/images/icones/paises/brasil/icon_parana.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Paraná">
+                <p>
+                 PR
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11072">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Tempestade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-19.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2" class="cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Pernambuco">
+                <img src="/cv/images/icones/paises/brasil/icon_pernambuco.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Pernambuco">
+                <p>
+                 PE
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11066">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11067">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1" class="cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Piauí">
+                <img src="/cv/images/icones/paises/brasil/icon_piaui.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Piauí">
+                <p>
+                 PI
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11066">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11067">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+
+            </div>
+            <div class="clearFloat"></div>
+            <!--*********************************************-->
+            <div id="estados_quadro2_barra_main3">
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Rio de Janeiro">
+                <img src="/cv/images/icones/paises/brasil/icon_rio_janeiro.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Rio de Janeiro">
+                <p>
+                 RJ
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Rio Grande do Norte">
+                <img src="/cv/images/icones/paises/brasil/icon_rio_grande_norte.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Rio Grande do Norte">
+                <p>
+                 RN
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11066">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11067">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Rio Grande do Sul">
+                <img src="/cv/images/icones/paises/brasil/icon_rio_grande_sul.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Rio Grande do Sul">
+                <p>
+                 RS
+                </p>
+               </div>
+               
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11051">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Acumulado de Chuva - Perigo">
+                    <img src="/cv/images/icones/eventos/icon_alert-18.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11065">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Ventos Costeiros - Perigo">
+                    <img src="/cv/images/icones/eventos/icon_alert-1.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:60px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11072">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Tempestade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-19.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Rondônia">
+                <img src="/cv/images/icones/paises/brasil/icon_rondonia.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Rondônia">
+                <p>
+                 RO
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11073">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Chuvas Intensas - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-7.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Roraima">
+                <img src="/cv/images/icones/paises/brasil/icon_roraima.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Roraima">
+                <p>
+                 RR
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Santa Catarina">
+                <img src="/cv/images/icones/paises/brasil/icon_santa_catarina.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Santa Catarina">
+                <p>
+                 SC
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11072">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Tempestade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-19.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="São Paulo">
+                <img src="/cv/images/icones/paises/brasil/icon_sao_paulo.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="São Paulo">
+                <p>
+                 SP
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Sergipe">
+                <img src="/cv/images/icones/paises/brasil/icon_sergipe.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Sergipe">
+                <p>
+                 SE
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Tocantins">
+                <img src="/cv/images/icones/paises/brasil/icon_tocantins.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Tocantins">
+                <p>
+                 TO
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11063">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Baixa Umidade - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a
+                   href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11073">
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;">
+                    <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                   <div
+                    style="position: absolute; top: 10px; left: 15px;"
+                    class="legenda" title="Chuvas Intensas - Perigo potencial">
+                    <img src="/cv/images/icones/eventos/icon_alert-7.png?_debugResources=y&n=1571343632237" />
+                   </div>
+                  </a>
+                 </div>
+                 
+                
+               
+              </div>
+             
+
+            </div>
+
+           </div>
+           <div id="tabs-2">
+            <div id="estados_quadro2_barra_main1">
+
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Acre">
+                <img src="/cv/images/icones/paises/brasil/icon_acre.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Acre">
+                <p>
+                 AC
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Alagoas">
+                <img src="/cv/images/icones/paises/brasil/icon_alagoas.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Alagoas">
+                <p>
+                 AL
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Amapá">
+                <img src="/cv/images/icones/paises/brasil/icon_amapa.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Amapá">
+                <p>
+                 AP
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Amazonas">
+                <img src="/cv/images/icones/paises/brasil/icon_amazonas.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Amazonas">
+                <p>
+                 AM
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Bahia">
+                <img src="/cv/images/icones/paises/brasil/icon_bahia.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Bahia">
+                <p>
+                 BA
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Ceará">
+                <img src="/cv/images/icones/paises/brasil/icon_ceara.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Ceará">
+                <p>
+                 CE
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Distrito Federal">
+                <img src="/cv/images/icones/paises/brasil/icon_brasilia.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Distrito Federal">
+                <p>
+                 DF
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Espírito Santo">
+                <img src="/cv/images/icones/paises/brasil/icon_espirito_santo.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Espírito Santo">
+                <p>
+                 ES
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+              </div>
+             
+              <div
+               id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Goiás">
+                <img src="/cv/images/icones/paises/brasil/icon_goias.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Goiás">
+                <p>
+                 GO
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+               <div class="clearFloat"></div>
+              </div>
+             
+            </div>
+            <div class="clearFloat"></div>
+            <!--*********************************************-->
+            <div id="estados_quadro2_barra_main2">
+        
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Maranhão">
+                <img src="/cv/images/icones/paises/brasil/icon_maranhao.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Maranhão">
+                <p>
+                 MA
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Mato Grosso">
+                <img src="/cv/images/icones/paises/brasil/icon_mato_grosso.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Mato Grosso">
+                <p>
+                 MT
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11073">
+                  <div style="position: absolute; top: 10px; left: 15px;">
+                   <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                  </div>
+                  <div style="position: absolute; top: 10px; left: 15px;"
+                   class="legenda" title="Chuvas Intensas - Perigo potencial">
+                   <img src="/cv/images/icones/eventos/icon_alert-7.png?_debugResources=y&n=1571343632237" />
+                  </div></a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Mato Grosso do Sul">
+                <img src="/cv/images/icones/paises/brasil/icon_mato_grosso_sul.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Mato Grosso do Sul">
+                <p>
+                 MS
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Minas Gerais">
+                <img src="/cv/images/icones/paises/brasil/icon_minas_gerais.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Minas Gerais">
+                <p>
+                 MG
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Pará">
+                <img src="/cv/images/icones/paises/brasil/icon_para.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Pará">
+                <p>
+                 PA
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Paraíba">
+                <img src="/cv/images/icones/paises/brasil/icon_paraiba.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Paraíba">
+                <p>
+                 PB
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Paraná">
+                <img src="/cv/images/icones/paises/brasil/icon_parana.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Paraná">
+                <p>
+                 PR
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11072">
+                  <div style="position: absolute; top: 10px; left: 15px;">
+                   <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                  </div>
+                  <div style="position: absolute; top: 10px; left: 15px;"
+                   class="legenda" title="Tempestade - Perigo potencial">
+                   <img src="/cv/images/icones/eventos/icon_alert-19.png?_debugResources=y&n=1571343632237" />
+                  </div></a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Pernambuco">
+                <img src="/cv/images/icones/paises/brasil/icon_pernambuco.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Pernambuco">
+                <p>
+                 PE
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Piauí">
+                <img src="/cv/images/icones/paises/brasil/icon_piaui.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Piauí">
+                <p>
+                 PI
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+        
+            </div>
+            <div class="clearFloat"></div>
+            <!--*********************************************-->
+            <div id="estados_quadro2_barra_main3">
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Rio de Janeiro">
+                <img src="/cv/images/icones/paises/brasil/icon_rio_janeiro.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Rio de Janeiro">
+                <p>
+                 RJ
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Rio Grande do Norte">
+                <img src="/cv/images/icones/paises/brasil/icon_rio_grande_norte.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Rio Grande do Norte">
+                <p>
+                 RN
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Rio Grande do Sul">
+                <img src="/cv/images/icones/paises/brasil/icon_rio_grande_sul.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Rio Grande do Sul">
+                <p>
+                 RS
+                </p>
+               </div>
+               
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11051">
+                  <div style="position: absolute; top: 10px; left: 15px;">
+                   <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                  </div>
+                  <div style="position: absolute; top: 10px; left: 15px;"
+                   class="legenda" title="Acumulado de Chuva - Perigo">
+                   <img src="/cv/images/icones/eventos/icon_alert-18.png?_debugResources=y&n=1571343632237" />
+                  </div></a>
+                 </div>
+                 
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:30px">
+                  <a href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11065">
+                  <div style="position: absolute; top: 10px; left: 15px;">
+                   <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+                  </div>
+                  <div style="position: absolute; top: 10px; left: 15px;"
+                   class="legenda" title="Ventos Costeiros - Perigo">
+                   <img src="/cv/images/icones/eventos/icon_alert-1.png?_debugResources=y&n=1571343632237" />
+                  </div></a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:60px">
+                  <a href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11072">
+                  <div style="position: absolute; top: 10px; left: 15px;">
+                   <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                  </div>
+                  <div style="position: absolute; top: 10px; left: 15px;"
+                   class="legenda" title="Tempestade - Perigo potencial">
+                   <img src="/cv/images/icones/eventos/icon_alert-19.png?_debugResources=y&n=1571343632237" />
+                  </div></a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Rondônia">
+                <img src="/cv/images/icones/paises/brasil/icon_rondonia.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Rondônia">
+                <p>
+                 RO
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11073">
+                  <div style="position: absolute; top: 10px; left: 15px;">
+                   <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                  </div>
+                  <div style="position: absolute; top: 10px; left: 15px;"
+                   class="legenda" title="Chuvas Intensas - Perigo potencial">
+                   <img src="/cv/images/icones/eventos/icon_alert-7.png?_debugResources=y&n=1571343632237" />
+                  </div></a>
+                 </div>
+                 
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Roraima">
+                <img src="/cv/images/icones/paises/brasil/icon_roraima.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Roraima">
+                <p>
+                 RR
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Santa Catarina">
+                <img src="/cv/images/icones/paises/brasil/icon_santa_catarina.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Santa Catarina">
+                <p>
+                 SC
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11072">
+                  <div style="position: absolute; top: 10px; left: 15px;">
+                   <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                  </div>
+                  <div style="position: absolute; top: 10px; left: 15px;"
+                   class="legenda" title="Tempestade - Perigo potencial">
+                   <img src="/cv/images/icones/eventos/icon_alert-19.png?_debugResources=y&n=1571343632237" />
+                  </div></a>
+                 </div>
+                 
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="São Paulo">
+                <img src="/cv/images/icones/paises/brasil/icon_sao_paulo.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="São Paulo">
+                <p>
+                 SP
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza2">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Sergipe">
+                <img src="/cv/images/icones/paises/brasil/icon_sergipe.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Sergipe">
+                <p>
+                 SE
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+              </div>
+             
+              <div id="estados_quadro2_barra_cinza1">
+               <div id="estados_quadro2_icon_paises" class="legenda"
+                title="Tocantins">
+                <img src="/cv/images/icones/paises/brasil/icon_tocantins.png?_debugResources=y&n=1571343632237" />
+               </div>
+               <div id="estados_quadro2_nome_paises" class="legenda"
+                title="Tocantins">
+                <p>
+                 TO
+                </p>
+               </div>
+               
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+               
+                
+                 <div
+                  style="float: left; position: relative; left:0px">
+                  <a href="http://alert-as.inmet.gov.br/cv/emergencia/cap/11073">
+                  <div style="position: absolute; top: 10px; left: 15px;">
+                   <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+                  </div>
+                  <div style="position: absolute; top: 10px; left: 15px;"
+                   class="legenda" title="Chuvas Intensas - Perigo potencial">
+                   <img src="/cv/images/icones/eventos/icon_alert-7.png?_debugResources=y&n=1571343632237" />
+                  </div></a>
+                 </div>
+                 
+                
+               
+              </div>
+             
+        
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       
+       <div class="row-fluid legendaWrapper clearfix">
+        <div class="span12">
+
+         <div id="form_legenda">
+          
+
+ <a href="#legenda" role="button" data-toggle="modal" class="clearfix">
+  <div id="content_quadro3_main" style="margin-top: 20px; margin-left: 0px; float: left; width: 100%;background-color: #fff;" class="clearfix">
+   <div id="legenda_quadro3_main" style="margin: 0px auto; float: left; width: 100%; text-align: center;" class="clearfix">
+    <div id="legenda_quadro3_legenda" style="margin-top: 11px; margin-left: 2%; float: left; font-family: Tahoma, Geneva, sans-serif; font-size: 12px; color: #000;" class="clearfix">
+     <p>
+      <b>Legenda</b>
+     </p>
+    </div>
+    <div id="legenda_quadro3_icon_legenda" style="margin-top: 7px; margin-left: 5px; float: left; width: 130px; height: 50px;" class="clearfix">
+     <div id="legenda_quadro3_icon_verde" class="legenda" title="Nothing reported">
+      <img src="/cv/images/icones/icon_verde.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_amarelo" class="legenda" title="Potential danger">
+      <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_laranja" class="legenda" title="Danger">
+      <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_vermelho" class="legenda" title="Very Dangerous">
+      <img src="/cv/images/icones/icon_vermelho.png?_debugResources=y&n=1571343632237" />
+     </div>
+    </div>
+    <div id="legenda_quadro3_icon_alert_main" class''="clearfix">
+     <div id="legenda_quadro3_icon_alert-1" class="legenda" title="Coastal Winds">
+      <img src="/cv/images/icones/eventos/icon_alert-1.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-2" class="legenda" title="Underset">
+      <img src="/cv/images/icones/eventos/icon_alert-2.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-3" class="legenda" title="Cold Wave">
+      <img src="/cv/images/icones/eventos/icon_alert-3.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-4" class="legenda" title="Tornado">
+      <img src="/cv/images/icones/eventos/icon_alert-4.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-5" class="legenda" title="Lightning">
+      <img src="/cv/images/icones/eventos/icon_alert-5.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-6" class="legenda" title="Hail">
+      <img src="/cv/images/icones/eventos/icon_alert-6.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-7" class="legenda" title="Heavy Rain">
+      <img src="/cv/images/icones/eventos/icon_alert-7.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-8" class="legenda" title="Wind Gusts">
+      <img src="/cv/images/icones/eventos/icon_alert-8.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-9" class="legenda" title="Heat Wave">
+      <img src="/cv/images/icones/eventos/icon_alert-9.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-10" class="legenda" title="Freezing">
+      <img src="/cv/images/icones/eventos/icon_alert-10.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-11" class="legenda" title="Frost">
+      <img src="/cv/images/icones/eventos/icon_alert-11.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-12" class="legenda" title="Seasonal Drought">
+      <img src="/cv/images/icones/eventos/icon_alert-12.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-13" class="legenda" title="Drought">
+      <img src="/cv/images/icones/eventos/icon_alert-13.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-14" class="legenda" title="Fires">
+      <img src="/cv/images/icones/eventos/icon_alert-14.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-15" class="legenda" title="Low Relative Humidity">
+      <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-16" class="legenda" title="Snowfall">
+      <img src="/cv/images/icones/eventos/icon_alert-16.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-17" class="legenda" title="Decreasing Temperature">
+      <img src="/cv/images/icones/eventos/icon_alert-17.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-18" class="legenda" title="Excessive Rainfall">
+      <img src="/cv/images/icones/eventos/icon_alert-18.png?_debugResources=y&n=1571343632237" />
+     </div>
+     <div id="legenda_quadro3_icon_alert-19" class="legenda" title="Storm">
+      <img src="/cv/images/icones/eventos/icon_alert-19.png?_debugResources=y&n=1571343632237" />
+     </div>
+    </div>
+
+   </div>
+  </div>
+ </a>
+ 
+ <div id="legenda" class="modal hide fade"
+  style="width: 750px; min-height: 500px" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+   <button type="button" class="close" data-dismiss="modal"
+    aria-hidden="true">×</button>
+   <h3 id="myModalLabel">Legenda</h3>
+  </div>
+  <div class="modal-body" style="min-height: 450px;">
+   <!--<div style="float: left; text-align: left">
+    <div>
+     <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" title="Perigo Potencial"/>
+      &nbsp; Perigo Potencial
+    </div>
+    <div>
+     <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Perigo
+    </div>
+    <div>
+     <img src="/cv/images/icones/icon_vermelho.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Grande Perigo
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-1.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Ventos Costeiros
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-2.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Ressaca
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-3.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Onda de Frio
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-4.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Tornados
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-5.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Tempestade de Raios
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-6.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Granizo
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-7.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Chuvas Intensas
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-8.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Vendaval
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-9.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Onda de Calor
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-10.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Friagem
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-11.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Geada
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-12.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Estiagem
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-13.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Seca
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-14.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Incêndios
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Baixa Umidade
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-16.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Neve
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-17.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Declínio de Temperatura
+    </div>
+    <div>
+     <img src="/cv/images/icones/eventos/icon_alert-18.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+      &nbsp; Acumulado de Chuva
+    </div>
+   </div> -->
+   <table style="width:100%; padding:15px; border:1px solid black;border-collapse:collapse;">
+     <tr style="width:100%;  border:1px solid black;border-collapse:collapse;">
+       <th style="text-align:center; padding:10px;"><b>Ícone</b></th>
+       <th style="text-align:center; padding:10px;"><b>Descrição</b></th>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/icon_verde.png?_debugResources=y&n=1571343632237" title="Perigo Potencial"/>
+     </div>
+    </td>
+       <td style="text-align:justify">Nada Previsto. Situação meteorológica que não inspira cuidado/atenção.</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/icon_amarelo.png?_debugResources=y&n=1571343632237" title="Perigo Potencial"/>
+     </div>
+    </td>
+       <td style="text-align:justify">Perigo Potencial. Situação meteorológica potencialmente perigosa. Cuidado na prática de atividades sujeitas  a riscos de caráter meteorológico. Mantenha-se informado sobre as condições meteorológicas previstas e não corra risco desnecessário.</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/icon_laranja.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+     </div>
+    </td>
+       <td style="text-align:justify">Perigo. Situação meteorológica perigosa. Mantenha-se muito vigilante e informe-se regularmente sobre as condições meteorológicas previstas. Inteire-se sobre os riscos que possam ser inevitáveis. Siga os conselhos das autotidades.</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/icon_vermelho.png?_debugResources=y&n=1571343632237" title="Grande Perigo"/>
+     </div>
+    </td>
+       <td style="text-align:justify">Grande Perigo. Situação meteorológica de grande perigo. Estão previstos fenômenos meteorológicos de intensidade excepcional. Grande probabilidade de ocorrência de grandes danos e acidentes, com riscos para a integridade física ou mesmo à vida humana. Mantenha-se informado sobre as condições meteorológicas previstas e os possíveis riscos. Siga as instruções e conselhos das autoridades em todas as circunstâncias e prepare-se para medidas de emergência.</td>  
+     </tr>
+     
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-1.png?_debugResources=y&n=1571343632237" title="Perigo Potencial"/>
+     </div>
+    </td>
+       <td>Ventos Costeiros</td>  
+     </tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-2.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+     </div>
+    </td>
+       <td>Ressaca</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-3.png?_debugResources=y&n=1571343632237" title="Grande Perigo"/>
+     </div>
+    </td>
+       <td>Onda de Frio</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-4.png?_debugResources=y&n=1571343632237" title="Perigo Potencial"/>
+     </div>
+    </td>
+       <td>Tornados</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-5.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+     </div>
+    </td>
+       <td>Tempestade de Raios</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-6.png?_debugResources=y&n=1571343632237" title="Grande Perigo"/>
+     </div>
+    </td>
+       <td>Granizo</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-7.png?_debugResources=y&n=1571343632237" title="Perigo Potencial"/>
+     </div>
+    </td>
+       <td>Chuvas Intensas</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-8.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+     </div>
+    </td>
+       <td>Vendaval</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-9.png?_debugResources=y&n=1571343632237" title="Grande Perigo"/>
+     </div>
+    </td>
+       <td>Onda de Calor</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-10.png?_debugResources=y&n=1571343632237" title="Perigo Potencial"/>
+     </div>
+    </td>
+       <td>Friagem</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-11.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+     </div>
+    </td>
+       <td>Geada</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-12.png?_debugResources=y&n=1571343632237" title="Grande Perigo"/>
+     </div>
+    </td>
+       <td>Estiagem</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-13.png?_debugResources=y&n=1571343632237" title="Perigo Potencial"/>
+     </div>
+    </td>
+       <td>Seca</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-14.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+     </div>
+    </td>
+       <td>Incêndios</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-15.png?_debugResources=y&n=1571343632237" title="Grande Perigo"/>
+     </div>
+    </td>
+       <td>Baixa Umidade</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-16.png?_debugResources=y&n=1571343632237" title="Perigo"/>
+     </div>
+    </td>
+       <td>Neve</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-17.png?_debugResources=y&n=1571343632237" title="Grande Perigo"/>
+     </div>
+    </td>
+       <td>Declínio de Temperatura</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-18.png?_debugResources=y&n=1571343632237" title="Grande Perigo"/>
+     </div>
+    </td>
+       <td>Acumulado de Chuva</td>  
+     </tr>
+     <tr style="width:100%; border:1px solid black;border-collapse:collapse; padding:10px;">
+       <td>
+        <div>
+      <img src="/cv/images/icones/eventos/icon_alert-19.png?_debugResources=y&n=1571343632237" title="Grande Perigo"/>
+     </div>
+    </td>
+       <td>Tempestade</td>  
+     </tr>
+   </table>
+   <div style="clear: both"></div>
+
+
+  </div>
+  <div class="modal-footer">
+   <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+  </div>
+ </div>
+         </div>
+
+        </div>
+       </div>
+
+      </div>
+
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <!--**********************Fim da Grid main***********************-->
+
+ <script type="text/javascript"
+  src="/cv/js/jquery-ui-1.8.21.custom.min.js?_debugResources=y&n=1571343632237"></script>
+ <script type="text/javascript"
+  src="/cv/js/jquery-ui-timepicker-addon.js?_debugResources=y&n=1571343632237"></script>
+ <link rel="stylesheet"
+  href="/cv/css/smoothness/jquery-ui-1.8.21.custom.css?_debugResources=y&n=1571343632237" />
+ <link rel="stylesheet"
+  href="/cv/css/innerpage.css?_debugResources=y&n=1571343632237" />
+ <script type="text/javascript"
+  src="/cv/js/ext-3.4.0/adapter/ext/ext-base.js?_debugResources=y&n=1571343632237"></script>
+ <script type="text/javascript"
+  src="/cv/js/ext-3.4.0/ext-all.js?_debugResources=y&n=1571343632237"></script>
+ <link rel="stylesheet" type="text/css"
+  href="/cv/js/ext-3.4.0/resources/css/ext-all.css?_debugResources=y&n=1571343632237" />
+ <script type="text/javascript"
+  src="/cv/js/GeoExt/lib/GeoExt.js?_debugResources=y&n=1571343632237"></script>
+
+ </div>
+
+ 
+ <div id="spinner" class="spinner" style="display: none;">
+  Loading&hellip;
+ </div>
+ 
+ <script src="/cv/js/application.js?_debugResources=y&n=1571343632237" type="text/javascript" ></script>
+
+ <div class="clearFloat"></div>
+ <div class="footer_main left">
+  <div class="footer_ext">
+   <div class="footer_in">
+    <div class="footer_txt">
+     <p>
+      <b>Alert-AS - Virtual Center for Severe Weather Warnings</b> <font size="1">(v. 1.14.4)</font>
+     </p>
+    </div>
+    <div class="footer_txt2">
+     <p>
+      Licença de Uso: O conteúdo deste site, poderá ser reproduzido desde que citada a fonte, excetuando os casos especificados em contrário e os conteúdos replicados de outras fontes. <br> O INMET não se responsabiliza por eventuais danos que o conteúdo hospedado por terceiros possa causar, sejam estes morais ou materiais.
+     </p>
+    </div>
+   </div>
+  </div>
+ </div>
+ <iframe src="http://alert-as.inmet.gov.br/cv/midia/analytics" height="0px" style="display:block;border:none;">
+ </iframe>
+ <script>
+
+  $(function(){
+ 
+   $(".legenda").mouseover(function(){
+    $(this).tooltip('show');
+   });
+   $(".legenda").mouseout(function(){
+    $(this).tooltip('hide');
+   });
+  });
+ 
+  /*(function(i, s, o, g, r, a, m) {
+   i['GoogleAnalyticsObject'] = r;
+   i[r] = i[r] || function() {
+    (i[r].q = i[r].q || []).push(arguments)
+   }, i[r].l = 1 * new Date();
+   a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+   a.async = 1;
+   a.src = g;
+   m.parentNode.insertBefore(a, m)
+  })(window, document, 'script',
+    '//www.google-analytics.com/analytics.js', 'ga');
+
+  ga('create', 'UA-62260068-1', 'auto');
+  ga('send', 'pageview');*/
+ </script>
+</body>
+</html>

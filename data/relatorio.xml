@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+  <identifier>urn:oid:2.49.0.0.76.0.2019.9494.3</identifier>
+  <sender>info.aviso@inmet.gov.br</sender>
+  <sent>2019-10-17T09:54:43-03:00</sent>
+  <status>Actual</status>
+  <msgType>Update</msgType>
+  <scope>Public</scope>
+  <references>info.aviso@inmet.gov.br,urn:oid:2.49.0.0.76.0.2019.9494.1,2019-10-16T09:53:36-03:00 info.aviso@inmet.gov.br,urn:oid:2.49.0.0.76.0.2019.9494.2,2019-10-17T09:53:49-03:00</references>
+  <info>
+    <language>pt-BR</language>
+    <category>Met</category>
+    <event>Ventos Costeiros</event>
+    <responseType>Prepare</responseType>
+    <urgency>Future</urgency>
+    <severity>Severe</severity>
+    <certainty>Likely</certainty>
+    <onset>2019-10-16T15:00:00-03:00</onset>
+    <expires>2019-10-18T06:00:00-03:00</expires>
+    <senderName>Instituto Nacional de Meteorologia</senderName>
+    <headline>Aviso de Ventos Costeiros. Severidade Grau: Perigo Potencial</headline>
+    <description>INMET publica aviso iniciando em: 16/10/2019 15:00. Procurar a Marinha do Brasil.</description>
+    <instruction>Contate a Defesa Civil (telefone: 199).</instruction>
+    <web>http://alert-as.inmet.gov.br/cv/emergencia/cap/11065</web>
+    <contact>INMET - Eixo Monumental Sul Via S1 - Sudoeste - Brasília-DF (61) 2102-4700</contact>
+    <parameter><valueName>ColorRisk</valueName><value>#FF9933</value></parameter>
+    <parameter><valueName>TimeStampDateOnSet</valueName><value>1571248800000</value></parameter>
+    <parameter><valueName>TimeStampDateExpires</valueName><value>1571389200000</value></parameter>
+    <parameter><valueName>Municipios</valueName><value>Alvorada - RS (4300604), Arambaré - RS (4300851), Arroio Do Sal - RS (4301057), Arroio Grande - RS (4301305), Balneário Pinhal - RS (4301636), Barra Do Ribeiro - RS (4301909), Cachoeirinha - RS (4303103), Camaquã - RS (4303509), Canoas - RS (4304606), Capão Da Canoa - RS (4304630), Capão Do Leão - RS (4304663), Capivari Do Sul - RS (4304671), Caraá - RS (4304713), Cerro Grande Do Sul - RS (4305173), Chuí - RS (4305439), Cidreira - RS (4305454), Cristal - RS (4306056), Dom Pedro De Alcântara - RS (4306551), Glorinha - RS (4309050), Gravataí - RS (4309209), Guaíba - RS (4309308), Imbé - RS (4310330), Itati - RS (4310652), Jaguarão - RS (4311007), Lagoa Dos Patos - RS (4300002), Lagoa Mirim - RS (4300001), Maquiné - RS (4311775), Mariana Pimentel - RS (4311981), Morrinhos Do Sul - RS (4312443), Mostardas - RS (4312500), Osório - RS (4313508), Palmares Do Sul - RS (4313656), Pelotas - RS (4314407), Porto Alegre - RS (4314902), Rio Grande - RS (4315602), Riozinho - RS (4315750), Rolante - RS (4316006), Santa Vitória Do Palmar - RS (4317301), Santo Antônio Da Patrulha - RS (4317608), São Francisco De Paula - RS (4318200), São José Do Norte - RS (4318507), São Lourenço Do Sul - RS (4318804), Sentinela Do Sul - RS (4320354), Sertão Santana - RS (4320552), Tapes - RS (4321105), Taquara - RS (4321204), Tavares - RS (4321352), Terra De Areia - RS (4321436), Torres - RS (4321501), Tramandaí - RS (4321600), Três Cachoeiras - RS (4321667), Três Forquilhas - RS (4321832), Turuçu - RS (4322327), Viamão - RS (4323002), Xangri-Lá - RS (4323804)</value></parameter>
+    <parameter><valueName>Estados</valueName><value>Rio Grande do Sul</value></parameter>
+    <area>
+      <areaDesc>Aviso para as áreas: Encosta Do Sudeste, Depressão Central, Encosta Inferior Do Nordeste, Campos De Cima Da Serra, Litoral Gaúcho</areaDesc>
+      <polygon>-29.39,-50.09 -29.67,-50.76 -30.03,-51.25 -31.85,-52.54 -33.16,-53.41 -33.6,-53.49 -33.73,-53.38 -33.24,-52.72 -32.85,-52.49 -32.37,-52.33 -32.18,-52.13 -31.9,-51.81 -31.7,-51.41 -31.44,-51.11 -31.1,-50.76 -30.59,-50.38 -29.97,-50.12 -29.36,-49.75 -29.32,-49.92 -29.39,-50.09</polygon>
+    </area>
+  </info>
+</alert>
