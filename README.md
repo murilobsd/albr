@@ -1,4 +1,7 @@
-# ALBR - Alertas Meterológicos
+# ALBR - Alertas Meterológicos Brasileiro
+> Biblioteca para obter alertas meteorológicos dos munícipios brasileiros.
+
+[![license](https://img.shields.io/badge/License-BSD-blue.svg?style=for-the-badge)](LICENSE)
 
 Biblioteca para obter alertas meteorológicos de um determinado munícipio
 brasileiro, os dados são obtidos através do [Alert -
