@@ -2,6 +2,7 @@
 > Biblioteca para obter alertas meteorológicos dos munícipios brasileiros.
 
 [![license](https://img.shields.io/badge/License-BSD-blue.svg?style=for-the-badge)](LICENSE)
+[![godoc](https://img.shields.io/badge/GO-DOC-blue.svg?style=for-the-badge)](https://godoc.org/github.com/murilobsd/albr)
 
 Biblioteca para obter alertas meteorológicos de um determinado munícipio
 brasileiro, os dados são obtidos através do [Alert -
