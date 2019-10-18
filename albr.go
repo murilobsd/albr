@@ -19,13 +19,13 @@
 package albr
 
 import (
+	"C"
 	"encoding/xml"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"regexp"
 	"strings"
-  "C"
 )
 
 const (
@@ -75,19 +75,19 @@ var (
 		"TO": "TO",
 	}
 )
+
 // parameter
 type parametro struct {
 	XMLName xml.Name `xml:"parameter"`
-  Name string `xml:"valueName"`
-  Value string `xml:"value"`
+	Name    string   `xml:"valueName"`
+	Value   string   `xml:"value"`
 }
-
 
 // info estrut
 type info struct {
-	XMLName xml.Name `xml:"info"`
-	Event   string   `xml:"event"`
-  Parametros []parametro  `xml:"parameter"`
+	XMLName    xml.Name    `xml:"info"`
+	Event      string      `xml:"event"`
+	Parametros []parametro `xml:"parameter"`
 }
 
 // Relatorio XML
@@ -95,7 +95,6 @@ type alert struct {
 	XMLName xml.Name `xml:"alert"`
 	Info    info     `xml:"info"`
 }
-
 
 // AlertaHoje retorna alerta do dia caso ele exista na região que foi
 // passada nos argumentos dessa função em caso negativo uma string

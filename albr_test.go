@@ -113,14 +113,14 @@ func TestExtrairURLRelatorio(t *testing.T) {
 
 func TestExtrairRelatorio(t *testing.T) {
 	extrairRelatorio("")
-  /*
-	urls, err := extrairURLRelatorio(URL_AL_ESTADOS)
-	if err != nil {
-		t.Errorf("TestExtrairURLRelatorio(%s), err != nil, queremos erro igual nulo", URL_AL_ESTADOS)
-	}
+	/*
+		urls, err := extrairURLRelatorio(URL_AL_ESTADOS)
+		if err != nil {
+			t.Errorf("TestExtrairURLRelatorio(%s), err != nil, queremos erro igual nulo", URL_AL_ESTADOS)
+		}
 
-	if len(urls) == 0 {
-		t.Errorf("TestRequisitar(%s), len urls, queremos tamanho urls maior que 0", URL_AL_ESTADOS)
-	}
-  */
+		if len(urls) == 0 {
+			t.Errorf("TestRequisitar(%s), len urls, queremos tamanho urls maior que 0", URL_AL_ESTADOS)
+		}
+	*/
 }
